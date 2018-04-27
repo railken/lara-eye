@@ -1,0 +1,4 @@
+parameters:
+	reportUnmatchedIgnoredErrors: false
+	ignoreErrors:
+		- '#Call to an undefined static method Illuminate\\Support\\Facades\\([a-zA-Z0-9_]+)::([a-zA-Z0-9_]+)\(\)#'
