@@ -1,7 +1,7 @@
 # Laravel Eye
 
 [![Build Status](https://travis-ci.org/railken/lara-eye.svg?branch=master)](https://travis-ci.org/railken/lara-eye)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Requirements
 
