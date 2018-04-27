@@ -67,18 +67,14 @@ abstract class BaseOperatorVisitor extends BaseVisitor
         if ($node instanceof Nodes\FunctionNode) {
             // .. ?
 
-            $f = null;
+            $f = $this->getBuilder()->getFunctions()->first(function($item, $key) use ($node) {
 
-            foreach ($this->getBuilder()->getFunctions() as $function) {
-
-                if ($node instanceof $function->node) {
-                    $f = $function;
-                    break;
-                }
-            }
+                $class = $item->getNode();
+                return $node instanceof $class;
+            }); 
 
             if (!$f) {
-                throw new \Exception("Ban");
+                throw new \Railken\SQ\Exceptions\QuerySyntaxException();
             }
 
             $childs = new Collection();
@@ -86,16 +82,15 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             foreach ($node->getChilds() as $child) {
                 $childs[] = $this->parseNode($child);
             }
-            
+
             $childs = $childs->map(function($v) {
                 if ($v instanceof \Illuminate\Database\Query\Expression) {
                     return $v->getValue();
                 }
-
                 return $v;
             });
 
-            return DB::raw($function->function . "(" . $childs->implode(",") . ")");
+            return DB::raw($f->getName() . "(" . $childs->implode(",") . ")");
         }
 
     }

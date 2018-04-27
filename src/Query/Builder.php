@@ -5,6 +5,7 @@ namespace Railken\LaraEye\Query;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Railken\SQ\Contracts\NodeContract;
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
+use Illuminate\Support\Collection;
 
 class Builder
 {
@@ -78,7 +79,7 @@ class Builder
      */
     public function setFunctions($functions)
     {
-        $this->functions = $functions;
+        $this->functions = new Collection($functions);
 
         return $this;
     }
