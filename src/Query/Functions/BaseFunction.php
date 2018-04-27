@@ -4,8 +4,22 @@ namespace Railken\LaraEye\Query\Functions;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
-class BaseFunction
+abstract class BaseFunction
 {
+    /**
+     * The node that will trigger the visitor.
+     *
+     * @var string
+     */
+    protected $node;
+
+    /**
+     * The string function for the query.
+     *
+     * @var string
+     */
+    protected $name;
+
     /**
      * @return string
      */
@@ -21,5 +35,4 @@ class BaseFunction
     {
         return $this->name;
     }
-
 }

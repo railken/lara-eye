@@ -54,7 +54,6 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      */
     public function parseNode($node)
     {
-
         if ($node instanceof Nodes\KeyNode) {
             return $this->parseKey($node->getValue());
         }
@@ -67,11 +66,10 @@ abstract class BaseOperatorVisitor extends BaseVisitor
         if ($node instanceof Nodes\FunctionNode) {
             // .. ?
 
-            $f = $this->getBuilder()->getFunctions()->first(function($item, $key) use ($node) {
-
+            $f = $this->getBuilder()->getFunctions()->first(function ($item, $key) use ($node) {
                 $class = $item->getNode();
                 return $node instanceof $class;
-            }); 
+            });
 
             if (!$f) {
                 throw new \Railken\SQ\Exceptions\QuerySyntaxException();
@@ -83,7 +81,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
                 $childs[] = $this->parseNode($child);
             }
 
-            $childs = $childs->map(function($v) {
+            $childs = $childs->map(function ($v) {
                 if ($v instanceof \Illuminate\Database\Query\Expression) {
                     return $v->getValue();
                 }
@@ -92,7 +90,6 @@ abstract class BaseOperatorVisitor extends BaseVisitor
 
             return DB::raw($f->getName() . "(" . $childs->implode(",") . ")");
         }
-
     }
 
     /**
@@ -104,7 +101,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      */
     public function parseKey($key)
     {
-        $key = (new Collection(explode(".", $key)))->map(function($part) {
+        $key = (new Collection(explode(".", $key)))->map(function ($part) {
             return '`'.$part.'`';
         })->implode(".");
 

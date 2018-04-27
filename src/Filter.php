@@ -63,8 +63,8 @@ class Filter
             new Visitors\NullVisitor($builder),
             new Visitors\NotNullVisitor($builder),
         ]);
-        $builder->setFunctions([ 
-            new Functions\ConcatFunction($builder),
+        $builder->setFunctions([
+            new Functions\ConcatFunction(),
         ]);
 
         return $builder;
@@ -103,7 +103,6 @@ class Filter
         ]);
 
         return $parser;
-
     }
 
     /**

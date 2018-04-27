@@ -38,7 +38,6 @@ class Builder
     {
         $this->context = Nodes\AndNode::class;
         $this->keys = $keys;
-
     }
 
     /**

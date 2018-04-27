@@ -19,5 +19,4 @@ class ConcatFunction extends BaseFunction
      * @var string
      */
     protected $name = 'CONCAT';
-
 }
