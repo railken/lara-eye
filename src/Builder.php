@@ -7,21 +7,8 @@ use Railken\SQ\QueryParser;
 use Railken\LaraEye\Query\Visitors as Visitors;
 use Railken\LaraEye\Query\Functions as Functions;
 
-class Filter
+class Builder
 {
-
-    /**
-     * Construct.
-     *
-     * @param string $table
-     * @param array $keys
-     */
-    public function __construct($table, $keys)
-    {
-        $this->table = $table;
-        $this->keys = $keys;
-    }
-
     /**
      * Filter query with where.
      *
@@ -31,7 +18,7 @@ class Filter
     {
         $builder = new Query\Builder();
         $builder->setVisitors([
-            (new Visitors\KeyVisitor($builder))->setKeys($this->keys)->setBaseTable($this->table),
+            
             new Visitors\EqVisitor($builder),
             new Visitors\NotEqVisitor($builder),
             new Visitors\GtVisitor($builder),
@@ -89,7 +76,6 @@ class Filter
 
         return $parser;
     }
-
 
     /**
      * Filter query with where.

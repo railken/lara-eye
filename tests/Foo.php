@@ -19,6 +19,6 @@ class Foo extends Model
      * @var array
      */
     protected $fillable = [
-        'x', 'y',
+        'x', 'y', 'z'
     ];
 }

@@ -3,6 +3,7 @@
 namespace Railken\LaraEye\Tests;
 
 use Railken\LaraEye\Filter;
+use Railken\SQ\Exceptions\QuerySyntaxException;
 
 class FilterTest extends \Orchestra\Testbench\TestCase
 {
@@ -26,21 +27,17 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      */
     public function newQuery($str_filter)
     {
-        $filter = new Filter();
-        $filter->setKeys(['x']);
+        $filter = new Filter("foo", ['id', 'x', 'y', 'z', 'created_at']);
         $query = (new Foo())->newQuery()->getQuery();
         $filter->build($query, $str_filter);
 
         return $query;
     }
-
-    /*public function testFilterUndefindKey()
-    {
-        $this->expectException(Railken\LaraEye\Exceptions\FilterUndefinedKeyException::class);
-        $filter = new Filter();
-        $filter->setKeys(['x']);
-        $filter->build((new Foo)->newQuery()->getQuery(), 'y eq 1');
-    }*/
+    public function testFilterUndefindKey() 
+    { 
+        $this->expectException(QuerySyntaxException::class); 
+        $this->newQuery('d eq 1');
+    }
 
     public function testFilterConcatFunction()
     {

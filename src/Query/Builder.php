@@ -25,19 +25,13 @@ class Builder
     protected $functions;
 
     /**
-     * @var array
-     */
-    protected $keys;
-
-    /**
      * Construct.
      *
      * @var array
      */
-    public function __construct($keys)
+    public function __construct()
     {
         $this->context = Nodes\AndNode::class;
-        $this->keys = $keys;
     }
 
     /**
