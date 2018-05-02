@@ -11,6 +11,17 @@ class Filter
 {
 
     /**
+     * @var string
+     */
+    protected $table;
+
+    /**
+     * @var array
+     */
+    protected $keys;
+
+
+    /**
      * Construct.
      *
      * @param string $table
