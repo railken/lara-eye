@@ -33,9 +33,9 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 
         return $query;
     }
-    public function testFilterUndefindKey() 
-    { 
-        $this->expectException(QuerySyntaxException::class); 
+    public function testFilterUndefindKey()
+    {
+        $this->expectException(QuerySyntaxException::class);
         $this->newQuery('d eq 1');
     }
 
