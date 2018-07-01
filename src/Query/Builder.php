@@ -20,7 +20,7 @@ class Builder
     protected $visitors;
 
     /**
-     * @var array
+     * @var \Illuminate\Support\Collection
      */
     protected $functions;
 

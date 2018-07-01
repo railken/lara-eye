@@ -48,7 +48,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
     /**
      * Parse the node.
      *
-     * @param Node
+     * @param \Railken\SQ\Contracts\NodeContract $node
      *
      * @return mixed
      */

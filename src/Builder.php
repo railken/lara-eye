@@ -91,7 +91,7 @@ class Builder
         $builder = $this->getBuilder();
 
         try {
-            return $builder->build($query, $parser->parse($filter));
+            $builder->build($query, $parser->parse($filter));
         } catch (\Railken\SQ\Exceptions\QuerySyntaxException $e) {
             throw new \Railken\SQ\Exceptions\QuerySyntaxException($filter);
         }

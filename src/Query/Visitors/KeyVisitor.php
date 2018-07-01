@@ -70,7 +70,7 @@ class KeyVisitor extends BaseVisitor
         if ($node instanceof Nodes\KeyNode) {
             $key = $node->getValue();
 
-            if ($this->getKeys() === '*') {
+            if ($this->getKeys()[0] === '*') {
                 return;
             }
 

@@ -6,7 +6,7 @@
         "php": ">=7.1",
         "railken/bag": "^1.2",
         "illuminate/database": "^5.4",
-        "railken/search-query": "^2.1.10",
+        "railken/search-query": "^2.2",
         "phpstan/phpstan": "^0.10"
     },
     "require-dev": {
