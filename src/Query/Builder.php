@@ -30,21 +30,6 @@ class Builder
      */
     public function __construct()
     {
-        $this->context = Nodes\AndNode::class;
-    }
-
-    /**
-     * Set context.
-     *
-     * @param string $context
-     *
-     * @return $this
-     */
-    public function setContext($context)
-    {
-        $this->context = $context;
-
-        return $this;
     }
 
     /**
@@ -75,19 +60,12 @@ class Builder
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getFunctions()
     {
         return $this->functions;
-    }
-
-    /**
-     * Get context.
-     *
-     * @return string
-     */
-    public function getContext()
-    {
-        return $this->context;
     }
 
     /**
