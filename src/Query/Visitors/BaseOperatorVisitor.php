@@ -2,9 +2,9 @@
 
 namespace Railken\LaraEye\Query\Visitors;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-use Illuminate\Support\Collection;
 
 abstract class BaseOperatorVisitor extends BaseVisitor
 {
@@ -25,7 +25,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
     /**
      * Visit the node and update the query.
      *
-     * @param mixed $query
+     * @param mixed                              $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
      */
@@ -38,7 +38,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             if ($context === Nodes\OrNode::class) {
                 $query->orWhere($this->parseNode($child0), $this->operator, $this->parseNode($child1));
             }
-                
+
             if ($context === Nodes\AndNode::class) {
                 $query->where($this->parseNode($child0), $this->operator, $this->parseNode($child1));
             }
@@ -62,12 +62,12 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             return $this->parseValue($node->getValue());
         }
 
-
         if ($node instanceof Nodes\FunctionNode) {
             // .. ?
 
             $f = $this->getBuilder()->getFunctions()->first(function ($item, $key) use ($node) {
                 $class = $item->getNode();
+
                 return $node instanceof $class;
             });
 
@@ -85,10 +85,11 @@ abstract class BaseOperatorVisitor extends BaseVisitor
                 if ($v instanceof \Illuminate\Database\Query\Expression) {
                     return $v->getValue();
                 }
+
                 return $v;
             });
 
-            return DB::raw($f->getName() . "(" . $childs->implode(",") . ")");
+            return DB::raw($f->getName().'('.$childs->implode(',').')');
         }
     }
 
@@ -101,9 +102,9 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      */
     public function parseKey($key)
     {
-        $key = (new Collection(explode(".", $key)))->map(function ($part) {
+        $key = (new Collection(explode('.', $key)))->map(function ($part) {
             return '`'.$part.'`';
-        })->implode(".");
+        })->implode('.');
 
         return DB::raw($key);
     }

@@ -23,7 +23,7 @@ class NotInVisitor extends InVisitor
     /**
      * Visit the node and update the query.
      *
-     * @param mixed $query
+     * @param mixed                              $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
      */

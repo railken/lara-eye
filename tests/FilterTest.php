@@ -7,7 +7,6 @@ use Railken\SQ\Exceptions\QuerySyntaxException;
 
 class FilterTest extends \Orchestra\Testbench\TestCase
 {
-
     /**
      * Setup the test environment.
      */
@@ -27,12 +26,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      */
     public function newQuery($str_filter)
     {
-        $filter = new Filter("foo", ['id', 'x', 'y', 'z', 'created_at']);
+        $filter = new Filter('foo', ['id', 'x', 'y', 'z', 'created_at']);
         $query = (new Foo())->newQuery()->getQuery();
         $filter->build($query, $str_filter);
 
         return $query;
     }
+
     public function testFilterUndefindKey()
     {
         $this->expectException(QuerySyntaxException::class);
@@ -138,5 +138,4 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where (`x` = ? and (`x` = ? or `x` = ?))', $this->newQuery('x = 1 and (x = 2 or x = 3)')->toSql());
         $this->assertEquals('select * from `foo` where (`x` = ? and (`x` = ?))', $this->newQuery('x = 1 and (x = 2)')->toSql());
     }
-
 }

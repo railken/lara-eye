@@ -2,10 +2,9 @@
 
 namespace Railken\LaraEye\Query;
 
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 use Railken\SQ\Contracts\NodeContract;
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-use Illuminate\Support\Collection;
 
 class Builder
 {
@@ -62,7 +61,6 @@ class Builder
         return $this;
     }
 
-
     /**
      * Set functions.
      *
@@ -95,11 +93,9 @@ class Builder
     /**
      * Build the query.
      *
-     * @param mixed $query
+     * @param mixed                              $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
-     *
-     * @return void
      */
     public function build($query, NodeContract $node, $context = Nodes\AndNode::class)
     {

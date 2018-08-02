@@ -2,14 +2,13 @@
 
 namespace Railken\LaraEye;
 
+use Railken\LaraEye\Query\Functions as Functions;
+use Railken\LaraEye\Query\Visitors as Visitors;
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
 use Railken\SQ\QueryParser;
-use Railken\LaraEye\Query\Visitors as Visitors;
-use Railken\LaraEye\Query\Functions as Functions;
 
 class Filter
 {
-
     /**
      * @var string
      */
@@ -20,12 +19,11 @@ class Filter
      */
     protected $keys;
 
-
     /**
      * Construct.
      *
      * @param string $table
-     * @param array $keys
+     * @param array  $keys
      */
     public function __construct($table, $keys)
     {
@@ -102,14 +100,11 @@ class Filter
         return $parser;
     }
 
-
     /**
      * Filter query with where.
      *
-     * @param mixed $query
+     * @param mixed  $query
      * @param string $filter
-     *
-     * @return void
      */
     public function build($query, $filter)
     {

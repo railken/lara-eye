@@ -2,8 +2,6 @@
 
 namespace Railken\LaraEye\Query\Functions;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-
 abstract class BaseFunction
 {
     /**

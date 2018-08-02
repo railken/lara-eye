@@ -74,7 +74,6 @@ class KeyVisitor extends BaseVisitor
                 return;
             }
 
-
             if (!in_array($key, $this->getKeys())) {
                 throw new QuerySyntaxException();
             }
