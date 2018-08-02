@@ -21,12 +21,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      * Retrieve a new instance of query.
      *
      * @param string $str_filter
+     * @param array  $keys
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function newQuery($str_filter)
+    public function newQuery($str_filter, $keys = ['id', 'x', 'y', 'z', 'created_at'])
     {
-        $filter = new Filter('foo', ['id', 'x', 'y', 'z', 'created_at']);
+        $filter = new Filter('foo', $keys);
         $query = (new Foo())->newQuery()->getQuery();
         $filter->build($query, $str_filter);
 
@@ -39,9 +40,20 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->newQuery('d eq 1');
     }
 
+    public function testFilterAndWrong()
+    {
+        $this->expectException(QuerySyntaxException::class);
+        $this->newQuery('x and 1');
+    }
+
     public function testFilterConcatFunction()
     {
         $this->assertEquals('select * from `foo` where `x` = CONCAT(`x`,2)', $this->newQuery('x eq concat(x,2)')->toSql());
+    }
+
+    public function testFilterAllKeysValid()
+    {
+        $this->assertEquals('select * from `foo` where `d` = `f`', $this->newQuery('d eq f', ['*'])->toSql());
     }
 
     public function testFilterEqColumns()
