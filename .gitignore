@@ -1,6 +1,5 @@
 vendor/
 \.php_cs\.cache
-
+build/
 \.env
-
 composer\.lock
