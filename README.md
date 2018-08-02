@@ -26,9 +26,9 @@ $str_filter = "x > 5 or y < z";
 $filter = new Filter("foo", ['id', 'x', 'y', 'z', 'created_at', 'updated_at']);
 
 try {
-	$filter->build($query, $str_filter);
+    $filter->build($query, $str_filter);
 } catch (QuerySyntaxException $e) {
-	// handle syntax error
+    // handle syntax error
 }
 
 
