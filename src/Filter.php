@@ -43,6 +43,7 @@ class Filter
         $builder = new Query\Builder();
         $builder->setVisitors([
             (new Visitors\KeyVisitor($builder))->setKeys($this->keys)->setBaseTable($this->table),
+            new Visitors\GroupVisitor($builder),
             new Visitors\EqVisitor($builder),
             new Visitors\NotEqVisitor($builder),
             new Visitors\GtVisitor($builder),

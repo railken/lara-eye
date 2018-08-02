@@ -131,4 +131,12 @@ class FilterTest extends \Orchestra\Testbench\TestCase
     {
         $this->assertEquals('select * from `foo` where `x` is not null', $this->newQuery('x is not null')->toSql());
     }
+
+    public function testGrouping()
+    {
+        $this->assertEquals('select * from `foo` where (`x` = ? or (`x` = ? and `x` = ?))', $this->newQuery('x = 1 or (x = 2 and x = 3)')->toSql());
+        $this->assertEquals('select * from `foo` where (`x` = ? and (`x` = ? or `x` = ?))', $this->newQuery('x = 1 and (x = 2 or x = 3)')->toSql());
+        $this->assertEquals('select * from `foo` where (`x` = ? and (`x` = ?))', $this->newQuery('x = 1 and (x = 2)')->toSql());
+    }
+
 }
