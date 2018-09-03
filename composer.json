@@ -20,6 +20,8 @@
         }
     },
     "autoload-dev": {
-        "psr-4": { "Railken\\LaraEye\\Tests\\": "tests/" }
+        "psr-4": { 
+            "Railken\\LaraEye\\Tests\\": "tests/" 
+        }
     }
 }
