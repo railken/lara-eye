@@ -70,6 +70,16 @@ class KeyVisitor extends BaseVisitor
         if ($node instanceof Nodes\KeyNode) {
             $key = $node->getValue();
 
+            $keys = explode('.', $key);
+
+            if (count($keys) === 1) {
+                $keys = [$this->getBaseTable(), $keys[0]];
+            }
+
+            $key = implode('.', $keys);
+
+            $node->setValue($key);
+
             if ($this->getKeys()[0] === '*') {
                 return;
             }
@@ -77,14 +87,6 @@ class KeyVisitor extends BaseVisitor
             if (!in_array($key, $this->getKeys())) {
                 throw new QuerySyntaxException();
             }
-
-            $keys = explode('.', $key);
-
-            if (count($keys) === 1) {
-                $keys = [$this->getBaseTable(), $keys[0]];
-            }
-
-            $node->setValue($key);
         }
 
         foreach ($node->getChilds() as $child) {

@@ -25,10 +25,22 @@ class Filter
      * @param string $table
      * @param array  $keys
      */
-    public function __construct($table, $keys)
+    public function __construct(string $table, array $keys)
     {
         $this->table = $table;
-        $this->keys = $keys;
+        $this->keys = array_map(function ($key) use ($table) {
+            if ($key === '*') {
+                return $key;
+            }
+
+            $keys = explode('.', $key);
+
+            if (count($keys) === 1) {
+                return implode('.', [$table, $key]);
+            }
+
+            return $key;
+        }, $keys);
     }
 
     /**
