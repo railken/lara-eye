@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/railken/lara-eye.svg?branch=master)](https://travis-ci.org/railken/lara-eye)
 
-Converts a query string into a nested where clauses for a QueryBuilder. This can be pretty usefull when building API.
+Converts a query string into a nested where clauses for a ```Illuminate\DataBase\Query\Builder```. 
+This can be pretty usefull when building API.
 
 ## Requirements
 
@@ -17,7 +18,7 @@ use Railken\SQ\Exceptions\QuerySyntaxException;
 use App\Foo;
 
 
-// Instance of Query\Builder
+// Instance of Illuminate\DataBase\Query\Builder
 $query = (new Foo())->newQuery()->getQuery();
 
 $str_filter = "x > 5 or y < z";
