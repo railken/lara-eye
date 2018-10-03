@@ -48,7 +48,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 
     public function testFilterConcatFunction()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,2)', $this->newQuery('x eq concat(x,2)')->toSql());
+        $this->assertEquals('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,?)', $this->newQuery('x eq concat(x,2)')->toSql());
+        $this->assertEquals('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,CONCAT(`foo`.`y`,?))', $this->newQuery('x eq concat(x,concat(y,3))')->toSql());
+    }
+
+    public function testFilterSumFunction()
+    {
+        $this->assertEquals('select * from `foo` where `foo`.`x` = SUM(`foo`.`x`,?)', $this->newQuery('x eq sum(x,2)')->toSql());
     }
 
     public function testFilterAllKeysValid()

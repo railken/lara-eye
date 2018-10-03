@@ -72,6 +72,7 @@ class Filter
         ]);
         $builder->setFunctions([
             new Functions\ConcatFunction(),
+            new Functions\SumFunction(),
         ]);
 
         return $builder;

@@ -36,11 +36,11 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             $child1 = $node->getChildByIndex(1);
 
             if ($context === Nodes\OrNode::class) {
-                $query->orWhere($this->parseNode($child0), $this->operator, $this->parseNode($child1));
+                $query->orWhere($this->parseNode($query, $child0), $this->operator, $this->parseNode($query, $child1));
             }
 
             if ($context === Nodes\AndNode::class) {
-                $query->where($this->parseNode($child0), $this->operator, $this->parseNode($child1));
+                $query->where($this->parseNode($query, $child0), $this->operator, $this->parseNode($query, $child1));
             }
         }
     }
@@ -48,11 +48,12 @@ abstract class BaseOperatorVisitor extends BaseVisitor
     /**
      * Parse the node.
      *
+     * @param mixed                              $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      *
      * @return mixed
      */
-    public function parseNode($node)
+    public function parseNode($query, $node)
     {
         if ($node instanceof Nodes\KeyNode) {
             return $this->parseKey($node->getValue());
@@ -78,15 +79,17 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             $childs = new Collection();
 
             foreach ($node->getChilds() as $child) {
-                $childs[] = $this->parseNode($child);
+                $childs[] = $this->parseNode($query, $child);
             }
 
-            $childs = $childs->map(function ($v) {
+            $childs = $childs->map(function ($v) use ($query) {
                 if ($v instanceof \Illuminate\Database\Query\Expression) {
                     return $v->getValue();
                 }
 
-                return $v;
+                $query->addBinding($v, 'where');
+
+                return '?';
             });
 
             return DB::raw($f->getName().'('.$childs->implode(',').')');
