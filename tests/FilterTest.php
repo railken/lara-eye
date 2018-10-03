@@ -25,7 +25,7 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function newQuery($str_filter, $keys = ['id', 'x', 'y', 'z', 'created_at'])
+    public function newQuery($str_filter, $keys)
     {
         $filter = new Filter('foo', $keys);
         $query = (new Foo())->newQuery()->getQuery();
@@ -37,123 +37,128 @@ class FilterTest extends \Orchestra\Testbench\TestCase
     public function testFilterUndefindKey()
     {
         $this->expectException(QuerySyntaxException::class);
-        $this->newQuery('d eq 1');
+        $this->newQuery('d eq 1', ['x']);
+    }
+
+    public function assertQuery(string $sql, string $filter, $keys = ['id', 'x', 'y', 'z', 'created_at']) 
+    {
+        $this->assertEquals($sql, $this->newQuery($filter, $keys)->toSql());
     }
 
     public function testFilterAndWrong()
     {
         $this->expectException(QuerySyntaxException::class);
-        $this->newQuery('x and 1');
+        $this->newQuery('x and 1', ['*']);
     }
 
     public function testFilterConcatFunction()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,?)', $this->newQuery('x eq concat(x,2)')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,CONCAT(`foo`.`y`,?))', $this->newQuery('x eq concat(x,concat(y,3))')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,?)', 'x eq concat(x,2)');
+        $this->assertQuery('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,CONCAT(`foo`.`y`,?))', 'x eq concat(x,concat(y,3))');
     }
 
     public function testFilterSumFunction()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` = SUM(`foo`.`x`,?)', $this->newQuery('x eq sum(x,2)')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` = SUM(`foo`.`x`,?)', 'x eq sum(x,2)');
     }
 
     public function testFilterAllKeysValid()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`d` = `foo`.`f`', $this->newQuery('d eq f', ['*'])->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`d` = `foo`.`f`', 'd eq f', ['*']);
     }
 
     public function testFilterEqColumns()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` = `foo`.`x`', $this->newQuery('x eq x')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` = `foo`.`x`', $this->newQuery('x = x')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` = `foo`.`x`', 'x eq x');
+        $this->assertQuery('select * from `foo` where `foo`.`x` = `foo`.`x`', 'x = x');
     }
 
     public function testFilterEq()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` = ?', $this->newQuery('x eq 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` = ?', $this->newQuery('x = 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` = ?', 'x eq 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` = ?', 'x = 1');
     }
 
     public function testFilterGt()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` > ?', $this->newQuery('x gt 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` > ?', $this->newQuery('x > 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` > ?', 'x gt 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` > ?', 'x > 1');
     }
 
     public function testFilterGte()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` >= ?', $this->newQuery('x gte 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` >= ?', $this->newQuery('x >= 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` >= ?', 'x gte 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` >= ?', 'x >= 1');
     }
 
     public function testFilterLt()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` < ?', $this->newQuery('x lt 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` < ?', $this->newQuery('x < 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` < ?', 'x lt 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` < ?', 'x < 1');
     }
 
     public function testFilterLte()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` <= ?', $this->newQuery('x lte 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` <= ?', $this->newQuery('x <= 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` <= ?', 'x lte 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` <= ?', 'x <= 1');
     }
 
     public function testFilterCt()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x ct 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x *= 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x ct 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x *= 1');
     }
 
     public function testFilterSw()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x sw 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x ^= 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x sw 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x ^= 1');
     }
 
     public function testFilterEw()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x ew 1')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` like ?', $this->newQuery('x $= 1')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x ew 1');
+        $this->assertQuery('select * from `foo` where `foo`.`x` like ?', 'x $= 1');
     }
 
     public function testFilterIn()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` in (?)', $this->newQuery('x in (1)')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` in (?)', $this->newQuery('x =[] (1)')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` in (?)', 'x in (1)');
+        $this->assertQuery('select * from `foo` where `foo`.`x` in (?)', 'x =[] (1)');
     }
 
     public function testFilterNotIn()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` not in (?)', $this->newQuery('x not in (1)')->toSql());
-        $this->assertEquals('select * from `foo` where `foo`.`x` not in (?)', $this->newQuery('x !=[] (1)')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` not in (?)', 'x not in (1)');
+        $this->assertQuery('select * from `foo` where `foo`.`x` not in (?)', 'x !=[] (1)');
     }
 
     public function testFilterAnd()
     {
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? and `foo`.`x` = ?)', $this->newQuery('x = 1 and x = 2')->toSql());
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? and `foo`.`x` = ?)', $this->newQuery('x = 1 && x = 2')->toSql());
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? and `foo`.`x` = ?)', 'x = 1 and x = 2');
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? and `foo`.`x` = ?)', 'x = 1 && x = 2');
     }
 
     public function testFilterOr()
     {
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? or `foo`.`x` = ?)', $this->newQuery('x = 1 or x = 2')->toSql());
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? or `foo`.`x` = ?)', $this->newQuery('x = 1 || x = 2')->toSql());
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? or `foo`.`x` = ?)', 'x = 1 or x = 2');
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? or `foo`.`x` = ?)', 'x = 1 || x = 2');
     }
 
     public function testFilterNull()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` is null', $this->newQuery('x is null')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` is null', 'x is null');
     }
 
     public function testFilterNotNull()
     {
-        $this->assertEquals('select * from `foo` where `foo`.`x` is not null', $this->newQuery('x is not null')->toSql());
+        $this->assertQuery('select * from `foo` where `foo`.`x` is not null', 'x is not null');
     }
 
     public function testGrouping()
     {
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? or (`foo`.`x` = ? and `foo`.`x` = ?))', $this->newQuery('x = 1 or (x = 2 and x = 3)')->toSql());
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? and (`foo`.`x` = ? or `foo`.`x` = ?))', $this->newQuery('x = 1 and (x = 2 or x = 3)')->toSql());
-        $this->assertEquals('select * from `foo` where (`foo`.`x` = ? and (`foo`.`x` = ?))', $this->newQuery('x = 1 and (x = 2)')->toSql());
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? or (`foo`.`x` = ? and `foo`.`x` = ?))', 'x = 1 or (x = 2 and x = 3)');
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? and (`foo`.`x` = ? or `foo`.`x` = ?))', 'x = 1 and (x = 2 or x = 3)');
+        $this->assertQuery('select * from `foo` where (`foo`.`x` = ? and (`foo`.`x` = ?))', 'x = 1 and (x = 2)');
     }
 }
