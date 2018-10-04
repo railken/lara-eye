@@ -87,7 +87,7 @@ class KeyVisitor extends BaseVisitor
             $node->setValue($key);
         }
 
-        foreach ($node->getChilds() as $child) {
+        foreach ($node->getChildren() as $child) {
             $this->visit($query, $child, $context);
         }
     }

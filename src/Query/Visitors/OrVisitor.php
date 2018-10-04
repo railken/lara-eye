@@ -18,7 +18,7 @@ class OrVisitor extends LogicOperatorVisitor
     {
         if ($node instanceof Nodes\OrNode) {
             $callback = function ($q) use ($node) {
-                foreach ($node->getChilds() as $child) {
+                foreach ($node->getChildren() as $child) {
                     $this->getBuilder()->build($q, $child, Nodes\OrNode::class);
                 }
             };
