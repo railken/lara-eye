@@ -89,7 +89,7 @@ class KeyVisitor extends BaseVisitor
             }
         }
 
-        foreach ($node->getChilds() as $child) {
+        foreach ($node->getChildren() as $child) {
             $this->visit($query, $child, $context);
         }
     }

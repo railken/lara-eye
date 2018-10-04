@@ -18,7 +18,7 @@ class GroupVisitor extends BaseVisitor
     {
         if ($node instanceof Nodes\GroupNode) {
             $callback = function ($q) use ($node,$context) {
-                foreach ($node->getChilds() as $child) {
+                foreach ($node->getChildren() as $child) {
                     $this->getBuilder()->build($q, $child, $context);
                 }
             };

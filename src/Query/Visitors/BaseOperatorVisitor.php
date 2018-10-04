@@ -78,7 +78,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
 
             $childs = new Collection();
 
-            foreach ($node->getChilds() as $child) {
+            foreach ($node->getChildren() as $child) {
                 $childs[] = $this->parseNode($query, $child);
             }
 
