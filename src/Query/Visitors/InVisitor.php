@@ -40,7 +40,7 @@ class InVisitor extends BaseOperatorVisitor
             if ($node->getChildByIndex(1) instanceof Nodes\GroupNode) {
                 $values = array_map(function ($node) {
                     return $this->parseValue($node->getValue());
-                }, $node->getChildByIndex(1)->getChilds());
+                }, $node->getChildByIndex(1)->getChildren());
             }
 
             if ($column && $values) {
