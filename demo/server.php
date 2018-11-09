@@ -26,7 +26,7 @@ $t->setUp();
 use Railken\LaraEye\Filter;
 use Railken\LaraEye\Tests\Foo;
 
-$filter = new Filter("foo", ['id', 'x', 'y', 'z', 'created_at']);
+$filter = new Filter("foo", ['*']);
 
 $query = \Illuminate\Support\Facades\DB::table('foo');
 
