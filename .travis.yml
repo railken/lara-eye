@@ -27,6 +27,8 @@ env:
 
 before_install:
   - composer clear-cache
+  - composer require --dev friendsofphp/php-cs-fixer
+  - composer require --dev phpstan/phpstan
 
 install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS; fi
