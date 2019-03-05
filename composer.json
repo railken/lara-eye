@@ -9,7 +9,7 @@
         "railken/search-query": "^2.2.1"
     },
     "require-dev": {
-        "orchestra/testbench": "^3.5"
+        "orchestra/testbench": "3.5 || 3.6"
     },
     "autoload": {
         "psr-4" : {
