@@ -105,7 +105,11 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      */
     public function parseKey($key)
     {
-        $key = (new Collection(explode('.', $key)))->map(function ($part) {
+        $keys = explode('.', $key);
+
+        $keys = [implode(".", array_slice($keys, 0, -1)), $keys[count($keys) - 1]];
+
+        $key = (new Collection($keys))->map(function ($part) {
             return '`'.$part.'`';
         })->implode('.');
 
