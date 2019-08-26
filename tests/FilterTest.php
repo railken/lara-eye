@@ -72,6 +72,11 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertQuery('select * from `foo` where `foo`.`x` = CONCAT(`foo`.`x`,CONCAT(`foo`.`y`,?))', 'x eq concat(x,concat(y,3))');
     }
 
+    public function testFilterDateFormatFunction()
+    {
+        $this->assertQuery('select * from `foo` where `foo`.`x` = DATE_FORMAT(`foo`.`x`,?)', 'x eq date_format(x,"%d")');
+    }
+
     /*public function testFilterSumFunction()
     {
         $this->assertQuery('select * from `foo` where `foo`.`x` = SUM(`foo`.`x`)', 'x eq sum(x)');

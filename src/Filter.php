@@ -73,6 +73,7 @@ class Filter
         $builder->setFunctions([
             new Functions\ConcatFunction(),
             new Functions\SumFunction(),
+            new Functions\DateFormatFunction(),
         ]);
 
         return $builder;
