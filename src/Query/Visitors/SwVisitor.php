@@ -29,6 +29,6 @@ class SwVisitor extends BaseOperatorVisitor
      */
     public function parseValue($value)
     {
-        return '%'.$value;
+        return $value.'%';
     }
 }
