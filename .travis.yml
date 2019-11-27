@@ -10,8 +10,8 @@ addons:
     packages:
       - libxml2-utils
 php:
-  - 7.1
   - 7.2
+  - 7.3
 
 matrix:
   allow_failures:
@@ -20,8 +20,17 @@ matrix:
 
 env:
   matrix:
-    - DEPENDENCIES="high"
-    - DEPENDENCIES="low"
+    - LARAVEL_VERSION=5.5.*  
+    - LARAVEL_VERSION=5.6.* 
+    - LARAVEL_VERSION=5.7.* 
+    - LARAVEL_VERSION=5.8.*
+    - LARAVEL_VERSION=6.0.*
+    - LARAVEL_VERSION=6.1.*
+    - LARAVEL_VERSION=6.2.*
+    - LARAVEL_VERSION=6.3.*
+    - LARAVEL_VERSION=6.4.*
+    - LARAVEL_VERSION=6.5.*
+    - LARAVEL_VERSION=6.6.*
   global:
     - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
 
@@ -40,6 +49,7 @@ before_script:
   - mysql -h localhost -e "GRANT ALL PRIVILEGES ON homestead.* TO homestead@localhost;"
   - mysql -h localhost -e "FLUSH PRIVILEGES;"
   - cp .env.example .env
+  - if [ "$LARAVEL_VERSION" != "" ]; then composer require --dev "laravel/framework:${LARAVEL_VERSION}" --no-update; fi;
   - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
