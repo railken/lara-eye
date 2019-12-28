@@ -80,7 +80,7 @@ class KeyVisitor extends BaseVisitor
 
             $node->setValue($key);
 
-            if ($this->getKeys()[0] === '*') {
+            if (count($this->getKeys()) > 0 && $this->getKeys()[0] === '*') {
                 return;
             }
 
