@@ -1,6 +1,6 @@
 # Laravel Eye
 
-[![Build Status](https://travis-ci.org/railken/lara-eye.svg?branch=master)](https://travis-ci.org/railken/lara-eye)
+[![Actions Status](https://github.com/railken/lara-eye/workflows/Test/badge.svg)](https://github.com/railken/lara-eye/actions)
 
 Filter your ```Illuminate\DataBase\Query\Builder``` using a structured query language.
 This can be pretty usefull when you're building an API and you don't want to waste hours of your time creating predefined filters that may change at any time.
