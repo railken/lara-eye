@@ -128,7 +128,7 @@ class Filter
         try {
             $builder->build($query, $parser->parse($filter));
         } catch (\Railken\SQ\Exceptions\QuerySyntaxException $e) {
-            throw new \Railken\SQ\Exceptions\QuerySyntaxException($filter);
+            throw new Exceptions\FilterSyntaxException($filter, $e->getMessage());
         }
     }
 }
