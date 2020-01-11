@@ -5,7 +5,7 @@ namespace Railken\LaraEye\Tests;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Railken\LaraEye\Filter;
-use Railken\SQ\Exceptions\QuerySyntaxException;
+use Railken\LaraEye\Exceptions\FilterSyntaxException;
 
 class FilterTest extends \Orchestra\Testbench\TestCase
 {
@@ -49,7 +49,7 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 
     public function testFilterUndefindKey()
     {
-        $this->expectException(QuerySyntaxException::class);
+        $this->expectException(FilterSyntaxException::class);
         $this->newQuery('d eq 1', ['x']);
     }
 
@@ -62,7 +62,7 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 
     public function testFilterAndWrong()
     {
-        $this->expectException(QuerySyntaxException::class);
+        $this->expectException(FilterSyntaxException::class);
         $this->newQuery('x and 1', ['*']);
     }
 
