@@ -9,8 +9,7 @@
         "railken/search-query": "^2.2.1"
     },
     "require-dev": {
-        "orchestra/testbench": "4.*",
-        "friendsofphp/php-cs-fixer": "^2.16"
+        "orchestra/testbench": "*"
     },
     "autoload": {
         "psr-4" : {
