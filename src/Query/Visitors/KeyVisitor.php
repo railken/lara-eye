@@ -72,6 +72,11 @@ class KeyVisitor extends BaseVisitor
 
             $keys = explode('.', $key);
 
+
+            if (count($this->getKeys()) === 0) {
+                throw new QuerySyntaxException(sprintf("No range of keys defined"));
+            }
+
             if (count($keys) === 1) {
                 $keys = [$this->getBaseTable(), $keys[0]];
             }
@@ -85,7 +90,7 @@ class KeyVisitor extends BaseVisitor
             }
 
             if (!in_array($key, $this->getKeys())) {
-                throw new QuerySyntaxException();
+                throw new QuerySyntaxException(sprintf("Invalid key %s", $key));
             }
         }
 
