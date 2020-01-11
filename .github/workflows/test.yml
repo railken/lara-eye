@@ -1,0 +1,60 @@
+name: Test
+on: 
+  pull_request:
+    paths:
+      - '**.php'      
+  push:
+    paths:
+      - '**.php'
+jobs:
+  laravel:
+    name: Laravel ${{ matrix.laravel-versions }} (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      BROADCAST_DRIVER: log 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+        laravel-versions: ['5.8.*', '6.*']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@master #https://github.com/shivammathur/setup-php
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring, dom, fileinfo, mysql, zip
+          coverage: xdebug #optional
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Install Composer dependencies
+        run: |
+          composer require --dev "laravel/framework:${{ matrix.laravel-versions }}" --no-update
+          composer update --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Prepare the application
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Test
+        run: ./vendor/bin/phpunit --coverage-text --coverage-clover=build/logs/clover.xml
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}

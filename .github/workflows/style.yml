@@ -1,0 +1,32 @@
+name: Style
+on: 
+  pull_request:
+    paths:
+      - '**.php'
+  push:
+    paths:
+      - '**.php'
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer require --dev friendsofphp/php-cs-fixer
+
+      - name: Run fix:style
+        run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
+          ./vendor/bin/php-cs-fixer fix src
+          ./vendor/bin/php-cs-fixer fix tests
+
+      - uses: stefanzweifel/git-auto-commit-action@v2.1.0
+        with:
+          commit_message: Apply style changes
+          branch: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
