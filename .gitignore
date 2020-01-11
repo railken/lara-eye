@@ -3,3 +3,5 @@ vendor/
 build/
 \.env
 composer\.lock
+
+.phpunit.result.cache
