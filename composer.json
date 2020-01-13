@@ -6,7 +6,7 @@
         "php": ">=7.1",
         "railken/bag": "^1.2",
         "illuminate/database": "5.* || 6.*",
-        "railken/search-query": "^2.2.1"
+        "railken/search-query": "3.*"
     },
     "require-dev": {
         "orchestra/testbench": "*",
