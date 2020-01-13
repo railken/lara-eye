@@ -20,7 +20,7 @@ class AndVisitor extends LogicOperatorVisitor
             $callback = function ($q) use ($node) {
                 foreach ($node->getChildren() as $child) {
                     if ($child instanceof Nodes\KeyNode || $child instanceof Nodes\ValueNode) {
-                        throw new \Railken\SQ\Exceptions\QuerySyntaxException();
+                        throw new \Railken\SQ\Exceptions\QuerySyntaxException('Wrong node detected in a logic comparison. Kes Nodes and Value Nodes cannot be used');
                     }
 
                     $this->getBuilder()->build($q, $child, Nodes\AndNode::class);
