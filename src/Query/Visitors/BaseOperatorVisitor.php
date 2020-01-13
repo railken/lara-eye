@@ -73,7 +73,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
             });
 
             if (!$f) {
-                throw new \Railken\SQ\Exceptions\QuerySyntaxException();
+                throw new \Railken\SQ\Exceptions\QuerySyntaxException(sprintf("Function %s not allowed", $node->getName()));
             }
 
             $childs = new Collection();
