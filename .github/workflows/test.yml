@@ -2,10 +2,12 @@ name: Test
 on: 
   pull_request:
     paths:
-      - '**.php'      
+      - '**.php' 
+      - '**.yml'
   push:
     paths:
       - '**.php'
+      - '**.yml'
 jobs:
   laravel:
     name: Laravel ${{ matrix.laravel }} (PHP ${{ matrix.php }})
