@@ -17,7 +17,7 @@ class GroupVisitor extends BaseVisitor
     public function visit($query, NodeContract $node, string $context)
     {
         if ($node instanceof Nodes\GroupNode) {
-            $callback = function ($q) use ($node,$context) {
+            $callback = function ($q) use ($node, $context) {
                 foreach ($node->getChildren() as $child) {
                     $this->getBuilder()->build($q, $child, $context);
                 }
