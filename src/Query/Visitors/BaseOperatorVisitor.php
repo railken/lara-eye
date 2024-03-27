@@ -84,7 +84,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
 
             $childs = $childs->map(function ($v) use ($query) {
                 if ($v instanceof \Illuminate\Database\Query\Expression) {
-                    return $v->getValue();
+                    return $v->getValue($query->grammar);
                 }
 
                 $query->addBinding($v, 'where');
