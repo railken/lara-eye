@@ -7,7 +7,7 @@ This can be pretty usefull when you're building an API and you don't want to was
 
 ## Requirements
 
-PHP 7.1 or later.
+PHP 8.1 or later.
 
 ## Usage
 
